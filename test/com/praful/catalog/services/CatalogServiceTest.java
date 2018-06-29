@@ -24,27 +24,25 @@ public class CatalogServiceTest {
 
     @BeforeAll
     public static void setup() throws Exception {
-
         Class.forName("org.h2.Driver");
         connection = DriverManager.getConnection("jdbc:h2:/Users/tw/thoughtworks/coding/service_extraction/catalog");
-        Statement stat = connection.createStatement();
+        try(Statement stat = connection.createStatement()) {
+            stat.execute("create table catalog(id int primary key, " +
+                    "name varchar(255), " +
+                    "category varchar(255), " +
+                    "sku varchar(255), " +
+                    "is_active boolean, " +
+                    "original_price decimal," +
+                    "sale_price decimal," +
+                    "is_on_sale boolean)");
+            stat.execute("insert into catalog values(1, 'Tommy Bahama Floral Shirt', 'Mens Shirts', 'SKU456', false, '20.99', '10.99', true)");
 
-        stat.execute("create table catalog(id int primary key, " +
-                "name varchar(255), " +
-                "category varchar(255), " +
-                "sku varchar(255), " +
-                "is_active boolean, " +
-                "original_price decimal," +
-                "sale_price decimal," +
-                "is_on_sale boolean)");
-        stat.execute("insert into catalog values(1, 'Tommy Bahama Floral Shirt', 'Mens Shirts', 'SKU456', false, '20.99', '10.99', true)");
+            stat.execute("insert into catalog values(2, 'BOSS Tuxedo Shirt', 'Mens Shirts', 'SKU789', true, '240', '180', true)");
 
-        stat.execute("insert into catalog values(2, 'BOSS Tuxedo Shirt', 'Mens Shirts', 'SKU789', true, '240', '180', true)");
+            stat.execute("insert into catalog values(3, 'Banana Republic Dress Shirt', 'Mens Shirts', 'SKU123', true, '100', '70', false)");
 
-        stat.execute("insert into catalog values(3, 'Banana Republic Dress Shirt', 'Mens Shirts', 'SKU123', true, '100', '70', false)");
-
-        stat.execute("insert into catalog values(4, 'Gap Casual Shirt', 'Mens Shirts', 'SKU999', true, '150', '120', false)");
-
+            stat.execute("insert into catalog values(4, 'Gap Casual Shirt', 'Mens Shirts', 'SKU999', true, '150', '120', false)");
+        }
     }
 
     @BeforeEach
