@@ -24,7 +24,6 @@ public class CatalogService {
     private BigDecimal calculatePrice(Product product) {
         if(product.isOnSale()) return product.getSalePrice();
         return product.getOriginalPrice();
-
     }
 
     public PriceRange getPriceRangeFor(String category) throws SQLException {

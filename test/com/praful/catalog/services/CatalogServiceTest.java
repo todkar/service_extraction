@@ -5,6 +5,7 @@ import com.praful.catalog.repositories.ProductRepository;
 import org.h2.tools.DeleteDbFiles;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -18,6 +19,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class CatalogServiceTest {
 
     private static Connection connection;
+    private CatalogService catalogService;
+    private ProductRepository productRepository;
 
     @BeforeAll
     public static void setup() throws Exception {
@@ -44,26 +47,26 @@ public class CatalogServiceTest {
 
     }
 
+    @BeforeEach
+    public void testSetup(){
+        productRepository = new ProductRepository(connection);
+        catalogService = new CatalogService(productRepository);
+    }
+
     @Test
     public void shouldGetSalePriceForProductOnSale() throws SQLException {
-        ProductRepository productRepository = new ProductRepository(connection);
-        CatalogService catalogService = new CatalogService(productRepository);
         BigDecimal actualPrice = catalogService.getPrice("SKU789");
         assertEquals(BigDecimal.valueOf(180), actualPrice);
     }
 
     @Test
     public void shouldGetOriginalPriceForProductNotOnSale() throws SQLException {
-        ProductRepository productRepository = new ProductRepository(connection);
-        CatalogService catalogService = new CatalogService(productRepository);
         BigDecimal actualPrice = catalogService.getPrice("SKU123");
         assertEquals(BigDecimal.valueOf(100), actualPrice);
     }
 
     @Test
     public void shouldGetPriceRangeForCategory() throws SQLException {
-        ProductRepository productRepository = new ProductRepository(connection);
-        CatalogService catalogService = new CatalogService(productRepository);
         PriceRange priceRange = catalogService.getPriceRangeFor("Mens Shirts");
         assertEquals(BigDecimal.valueOf(100), priceRange.getMinPrice());
         assertEquals(BigDecimal.valueOf(180), priceRange.getMaxPrice());
@@ -71,9 +74,6 @@ public class CatalogServiceTest {
 
     @Test
     public void shouldUpdateIsOnSaleFlag() throws SQLException {
-        ProductRepository productRepository = new ProductRepository(connection);
-        CatalogService catalogService = new CatalogService(productRepository);
-
         assertEquals(false, productRepository.getProduct("SKU999").isOnSale());
 
         catalogService.updateIsOnSale("SKU999");
