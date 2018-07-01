@@ -1,12 +1,12 @@
-package com.praful.catalog.services;
-
 import com.praful.catalog.dtos.PriceRange;
 import com.praful.catalog.repositories.ProductRepository;
+import com.praful.catalog.services.CatalogService;
 import org.h2.tools.DeleteDbFiles;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.AfterClass;
+import org.junit.Test;
+import org.junit.BeforeClass;
+import org.junit.Before;
+
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -14,7 +14,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static junit.framework.TestCase.assertEquals;
+
 
 public class CatalogServiceTest {
 
@@ -22,7 +23,7 @@ public class CatalogServiceTest {
     private CatalogService catalogService;
     private ProductRepository productRepository;
 
-    @BeforeAll
+    @BeforeClass
     public static void setup() throws Exception {
         Class.forName("org.h2.Driver");
         connection = DriverManager.getConnection("jdbc:h2:/Users/tw/thoughtworks/coding/service_extraction/catalog");
@@ -45,7 +46,7 @@ public class CatalogServiceTest {
         }
     }
 
-    @BeforeEach
+    @Before
     public void testSetup(){
         productRepository = new ProductRepository(connection);
         catalogService = new CatalogService(productRepository);
@@ -79,12 +80,10 @@ public class CatalogServiceTest {
         assertEquals(true, productRepository.getProduct("SKU999").isOnSale());
     }
 
-
-    @AfterAll
+    @AfterClass
     public static void tearDown() throws SQLException {
         connection.close();
         // delete the database
         DeleteDbFiles.execute("/Users/tw/thoughtworks/coding/service_extraction", "catalog", true);
     }
-
 }
