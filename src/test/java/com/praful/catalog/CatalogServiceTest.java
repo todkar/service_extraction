@@ -1,3 +1,5 @@
+package com.praful.catalog;
+
 import com.praful.catalog.dtos.PriceRange;
 import com.praful.catalog.repositories.ProductRepository;
 import com.praful.catalog.services.CatalogService;
