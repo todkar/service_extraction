@@ -13,10 +13,6 @@ public class PriceRange {
         this.maxPrice = maxPrice;
     }
 
-    public String getCategory() {
-        return category;
-    }
-
     public BigDecimal getMinPrice() {
         return minPrice;
     }
