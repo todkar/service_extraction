@@ -14,10 +14,6 @@ public class CoreProductService {
         this.coreProductRepository = coreProductRepository;
     }
 
-    public CoreProduct getProduct(String sku) throws SQLException {
-        return coreProductRepository.getProduct(sku);
-    }
-
     public List<CoreProduct> getActiveProductsFor(String category) throws SQLException {
         return coreProductRepository.getActiveProductsFor(category);
     }

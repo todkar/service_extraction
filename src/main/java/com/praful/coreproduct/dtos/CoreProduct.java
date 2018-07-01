@@ -14,19 +14,7 @@ public class CoreProduct {
         this.isActive = isActive;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
     public String getSku() {
         return sku;
-    }
-
-    public boolean isActive() {
-        return isActive;
     }
 }
