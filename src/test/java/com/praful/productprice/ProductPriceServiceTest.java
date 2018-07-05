@@ -21,8 +21,11 @@ import static junit.framework.TestCase.assertEquals;
 
 
 public class ProductPriceServiceTest {
-
+    private static String dbFolder = "./tmp/";
+    private static String dbFile = "catalog";
+    private static String connectionString = "jdbc:h2:" + dbFolder + dbFile;
     private static Connection connection;
+
     private CoreProductService coreProductService;
     private CoreProductRepository coreProductRepository;
     private ProductPriceService productPriceService;
@@ -31,7 +34,8 @@ public class ProductPriceServiceTest {
     @BeforeClass
     public static void setup() throws Exception {
         Class.forName("org.h2.Driver");
-        connection = DriverManager.getConnection("jdbc:h2:/Users/tw/thoughtworks/coding/service_extraction/catalog");
+        connection = DriverManager.getConnection(connectionString);
+
         try(Statement stat = connection.createStatement()) {
             stat.execute("create table core_product(id int primary key, " +
                     "name varchar(255), " +
@@ -105,6 +109,6 @@ public class ProductPriceServiceTest {
     public static void tearDown() throws SQLException {
         connection.close();
         // delete the database
-        DeleteDbFiles.execute("/Users/tw/thoughtworks/coding/service_extraction", "catalog", true);
+        DeleteDbFiles.execute(dbFolder, dbFile, true);
     }
 }
