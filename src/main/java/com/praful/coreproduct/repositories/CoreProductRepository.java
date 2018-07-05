@@ -13,26 +13,31 @@ public class CoreProductRepository {
 
     private Connection connection;
 
-    public CoreProductRepository(Connection connection){
+    public CoreProductRepository(Connection connection) {
         this.connection = connection;
     }
 
-    public List<CoreProduct> getActiveProductsFor(String category) throws SQLException {
+    public List<CoreProduct> getActiveProductsFor(String category) {
         List<CoreProduct> products = new ArrayList<>();
 
         String sql = "select * from core_product where category = ? and is_active = true";
-        try (PreparedStatement stat = connection.prepareStatement(sql)){
-            stat.setString(1, category);
-            ResultSet rs = stat.executeQuery();
+        try {
+            try (PreparedStatement stat = connection.prepareStatement(sql)) {
 
-            while(rs.next()) {
-                CoreProduct coreProduct = new CoreProduct(rs.getString("name"),
-                        rs.getString("category"),
-                        rs.getString("sku"),
-                        rs.getBoolean("is_active"));
+                stat.setString(1, category);
+                ResultSet rs = stat.executeQuery();
 
-                products.add(coreProduct);
+                while (rs.next()) {
+                    CoreProduct coreProduct = new CoreProduct(rs.getString("name"),
+                            rs.getString("category"),
+                            rs.getString("sku"),
+                            rs.getBoolean("is_active"));
+
+                    products.add(coreProduct);
+                }
             }
+        } catch (SQLException sqlException) {
+            throw new RuntimeException(sqlException);
         }
 
         return products;

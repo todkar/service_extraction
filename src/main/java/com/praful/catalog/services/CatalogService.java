@@ -5,7 +5,6 @@ import com.praful.catalog.dtos.Product;
 import com.praful.catalog.repositories.ProductRepository;
 
 import java.math.BigDecimal;
-import java.sql.SQLException;
 import java.util.List;
 
 public class CatalogService {
@@ -16,7 +15,7 @@ public class CatalogService {
         this.productRepository = productRepository;
     }
 
-    public BigDecimal getPrice(String sku) throws SQLException {
+    public BigDecimal getPrice(String sku) {
         Product product = productRepository.getProduct(sku);
         return calculatePrice(product);
     }
@@ -26,7 +25,7 @@ public class CatalogService {
         return product.getOriginalPrice();
     }
 
-    public PriceRange getPriceRangeFor(String category) throws SQLException {
+    public PriceRange getPriceRangeFor(String category) {
         List<Product> products = productRepository.findProductsFor(category);
         BigDecimal maxPrice = null;
         BigDecimal minPrice = null;
@@ -44,7 +43,7 @@ public class CatalogService {
         return new PriceRange(category, minPrice, maxPrice);
     }
 
-    public void updateIsOnSale(String sku) throws SQLException {
+    public void updateIsOnSale(String sku) {
         final Product product = productRepository.getProduct(sku);
         product.setOnSale(true);
         productRepository.save(product);

@@ -3,7 +3,6 @@ package com.praful.coreproduct.services;
 import com.praful.coreproduct.dtos.CoreProduct;
 import com.praful.coreproduct.repositories.CoreProductRepository;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public class CoreProductService {
@@ -14,7 +13,7 @@ public class CoreProductService {
         this.coreProductRepository = coreProductRepository;
     }
 
-    public List<CoreProduct> getActiveProductsFor(String category) throws SQLException {
+    public List<CoreProduct> getActiveProductsFor(String category) {
         return coreProductRepository.getActiveProductsFor(category);
     }
 }

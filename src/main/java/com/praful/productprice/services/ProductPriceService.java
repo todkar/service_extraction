@@ -7,7 +7,6 @@ import com.praful.productprice.dtos.ProductPrice;
 import com.praful.productprice.repositories.ProductPriceRepository;
 
 import java.math.BigDecimal;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,7 +20,7 @@ public class ProductPriceService {
         this.productPriceRepository = productPriceRepository;
     }
 
-    public BigDecimal getPrice(String sku) throws SQLException {
+    public BigDecimal getPrice(String sku) {
         ProductPrice productPrice = productPriceRepository.getPriceFor(sku);
         return calculatePrice(productPrice);
     }
@@ -31,7 +30,7 @@ public class ProductPriceService {
         return productPrice.getOriginalPrice();
     }
 
-    public PriceRange getPriceRangeFor(String category) throws SQLException {
+    public PriceRange getPriceRangeFor(String category) {
         List<CoreProduct> products = coreProductService.getActiveProductsFor(category);
 
         List<ProductPrice> productPrices = productPriceRepository.getProductPricesFor(mapCoreProductToSku(products));
@@ -54,7 +53,7 @@ public class ProductPriceService {
         return coreProducts.stream().map(p -> p.getSku()).collect(Collectors.toList());
     }
 
-    public void updateIsOnSale(String sku) throws SQLException {
+    public void updateIsOnSale(String sku) {
         final ProductPrice productPrice = productPriceRepository.getPriceFor(sku);
         productPrice.setOnSale(true);
         productPriceRepository.save(productPrice);
